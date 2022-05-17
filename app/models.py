@@ -8,6 +8,9 @@ class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     fname = db.Column(db.String(80), nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
+    residence = db.Column(db.String(80), nullable=False)
+    profession = db.Column(db.String(80), nullable=False)
+    hobby = db.Column(db.String(80), nullable=False)
     username = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(120), nullable=False)
 
