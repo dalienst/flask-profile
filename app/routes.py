@@ -26,7 +26,7 @@ def register():
     errors = {}
 
     if not fname:
-        errors["fname"] = "First name is required!"
+        errors["fname"] = "Full name is required!"
     if not email:
         errors["email"] = "Email is required!"
     if not residence:
@@ -59,7 +59,7 @@ def login():
         response = check_password_hash(user.password, password)
         if response:
             access_token = create_access_token(identity= {"Name":user.fname, "Username": user.username, "Email":user.email, "Residence":user.residence, "Profession":user.profession, "Hobby":user.hobby})
-            return jsonify(access_token=access_token), 200
+            return jsonify(access_token = access_token), 200
         else:
             return {"message": "Invalid credentials"}, 400
 
@@ -93,7 +93,14 @@ def update(id):
         return {"message":"User updated"}, 200
     return {"message":"User not found"}, 404
 
-
+@app.route("/delete/<id>", methods=["POST"])
+@jwt_required()
+def delete(id):
+    user = User.query.filter_by(id=id).first()
+    if user:
+        db.session.delete(user)
+        db.session.commit()
+        return jsonify({"Message":"User deleted"})
 
 @app.route("/logout", methods=["POST", "GET"])
 @jwt_required()
